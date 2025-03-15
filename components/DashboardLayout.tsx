@@ -137,52 +137,50 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             Trajectory {menuItems.find(item => item.href === pathname)?.text || 'Dashboard'}
           </Typography>
-          {session && (
-            <div>
-              <Tooltip title="Account settings">
-                <IconButton
-                  size="large"
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit"
-                >
-                  <Avatar
-                    sx={{ width: 32, height: 32 }}
-                    alt="Admin User"
-                  >
-                    A
-                  </Avatar>
-                </IconButton>
-              </Tooltip>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
+          <div>
+            <Tooltip title="Account settings">
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
               >
-                <MenuItem disabled>
-                  <Typography sx={{ p: 1 }}>
-                    admin@example.com
-                  </Typography>
-                </MenuItem>
-                <Divider />
-                <MenuItem onClick={handleClose}>
-                  <Typography textAlign="center">Profile</Typography>
-                </MenuItem>
-              </Menu>
-            </div>
-          )}
+                <Avatar
+                  sx={{ width: 32, height: 32 }}
+                  alt="Admin User"
+                >
+                  A
+                </Avatar>
+              </IconButton>
+            </Tooltip>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem disabled>
+                <Typography sx={{ p: 1 }}>
+                  admin@example.com
+                </Typography>
+              </MenuItem>
+              <Divider />
+              <MenuItem onClick={handleClose}>
+                <Typography textAlign="center">Profile</Typography>
+              </MenuItem>
+            </Menu>
+          </div>
         </Toolbar>
       </AppBar>
       <Box
