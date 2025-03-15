@@ -8,142 +8,26 @@ import {
   Box, 
   Card, 
   CardContent, 
-  CardHeader,
-  Divider,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
-  Avatar,
-  Chip,
-  Tooltip,
   Skeleton,
   useMediaQuery,
   useTheme,
   Alert
 } from '@mui/material';
-import { 
-  Event as EventIcon, 
-  Group as GroupIcon, 
-  Today as TodayIcon,
-  CalendarMonth as CalendarIcon,
-  Person as PersonIcon,
-  Email as EmailIcon,
-  Phone as PhoneIcon,
-  Info as InfoIcon,
+import {
   PeopleAlt as PeopleIcon,
-  School as SchoolIcon,
-  Insights as InsightsIcon
+  Event as EventIcon,
 } from '@mui/icons-material';
 
 // Interface for dashboard stats
 interface DashboardStats {
-  totalEvents: number;
   totalTeams: number;
-  totalInstitutions: number;
-  totalParticipants: number;
-  upcomingEvents: {
-    _id: string;
-    title: string;
-    date: Date;
-    venue: string;
-    type: string;
-  }[];
-  recentRegistrations: {
-    _id: string;
-    name: string;
-    event?: {
-      _id: string;
-      title: string;
-    };
-    leader: {
-      name: string;
-      email: string;
-      phone: string;
-    };
-    registrationDate: string;
-  }[];
+  totalEvents: number;
 }
 
-// Sample upcoming events
-const sampleUpcomingEvents = [
-  {
-    _id: "evt1",
-    title: "Annual Tech Conference",
-    date: new Date("2025-04-15"),
-    venue: "Convention Center",
-    type: "Conference"
-  },
-  {
-    _id: "evt2",
-    title: "Hackathon 2025",
-    date: new Date("2025-05-10"),
-    venue: "University Campus",
-    type: "Competition"
-  },
-  {
-    _id: "evt3",
-    title: "AI Workshop",
-    date: new Date("2025-04-25"),
-    venue: "Innovation Hub",
-    type: "Workshop"
-  }
-];
-
-// Sample recent registrations
-const sampleRecentRegistrations = [
-  {
-    _id: "team1",
-    name: "Code Wizards",
-    event: {
-      _id: "evt1",
-      title: "Annual Tech Conference"
-    },
-    leader: {
-      name: "John Smith",
-      email: "john.smith@example.com",
-      phone: "+1 (555) 123-4567"
-    },
-    registrationDate: "2025-03-10"
-  },
-  {
-    _id: "team2",
-    name: "Data Miners",
-    event: {
-      _id: "evt2",
-      title: "Hackathon 2025"
-    },
-    leader: {
-      name: "Emily Johnson",
-      email: "emily.j@example.com",
-      phone: "+1 (555) 987-6543"
-    },
-    registrationDate: "2025-03-12"
-  },
-  {
-    _id: "team3",
-    name: "AI Innovators",
-    event: {
-      _id: "evt3",
-      title: "AI Workshop"
-    },
-    leader: {
-      name: "Michael Chen",
-      email: "michael.c@example.com",
-      phone: "+1 (555) 456-7890"
-    },
-    registrationDate: "2025-03-14"
-  }
-];
-
-// Static dashboard data with sample events and registrations
+// Static dashboard data with real counts
 const staticDashboardData: DashboardStats = {
-  totalTeams: 42,
-  totalEvents: 12,
-  totalInstitutions: 15,
-  totalParticipants: 156,
-  upcomingEvents: sampleUpcomingEvents,
-  recentRegistrations: sampleRecentRegistrations
+  totalTeams: 0,
+  totalEvents: 0
 };
 
 // Dashboard card component
@@ -194,8 +78,8 @@ function StatCard({
 function DashboardSkeleton() {
   return (
     <Grid container spacing={3}>
-      {[1, 2, 3, 4].map((item) => (
-        <Grid item xs={12} sm={6} md={3} key={item}>
+      {[1, 2].map((item) => (
+        <Grid item xs={12} sm={6} key={item}>
           <Card sx={{ height: '100%' }}>
             <CardContent>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
@@ -299,7 +183,7 @@ export default function Dashboard() {
       </Typography>
       
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={12} sm={6}>
           <StatCard 
             title="Total Teams" 
             value={stats.totalTeams} 
@@ -307,7 +191,7 @@ export default function Dashboard() {
             loading={loading}
           />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={12} sm={6}>
           <StatCard 
             title="Total Events" 
             value={stats.totalEvents} 
@@ -315,155 +199,16 @@ export default function Dashboard() {
             loading={loading}
           />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <StatCard 
-            title="Institutions" 
-            value={stats.totalInstitutions} 
-            icon={<SchoolIcon />} 
-            loading={loading}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <StatCard 
-            title="Participants" 
-            value={stats.totalParticipants} 
-            icon={<InsightsIcon />} 
-            loading={loading}
-          />
-        </Grid>
       </Grid>
       
-      <Grid container spacing={3} sx={{ mt: 1 }}>
-        {/* Upcoming Events */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardHeader 
-              title="Upcoming Events" 
-              avatar={<CalendarIcon color="primary" />}
-              titleTypographyProps={{ variant: isMobile ? 'h6' : 'h5' }}
-            />
-            <Divider />
-            <CardContent sx={{ p: 0, maxHeight: { xs: 300, sm: 400 }, overflow: 'auto' }}>
-              <List>
-                {stats.upcomingEvents.length > 0 ? (
-                  stats.upcomingEvents.map((event) => (
-                    <ListItem key={event._id} divider>
-                      <ListItemAvatar>
-                        <Avatar sx={{ bgcolor: 'primary.main' }}>
-                          <TodayIcon />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={
-                          <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
-                            <Typography 
-                              variant="body1" 
-                              fontWeight="medium"
-                              sx={{ mr: 1 }}
-                            >
-                              {event.title}
-                            </Typography>
-                          </Box>
-                        }
-                        secondary={
-                          <Box>
-                            <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
-                              {`${event.date.toLocaleDateString()} - ${event.venue}`}
-                            </Typography>
-                            <Chip 
-                              size="small" 
-                              label={event.type} 
-                              color="primary" 
-                              variant="outlined"
-                              sx={{ mt: 0.5 }}
-                            />
-                          </Box>
-                        }
-                      />
-                    </ListItem>
-                  ))
-                ) : (
-                  <ListItem>
-                    <ListItemText primary="No upcoming events" />
-                  </ListItem>
-                )}
-              </List>
-            </CardContent>
-          </Card>
-        </Grid>
-        
-        {/* Recent Registrations */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardHeader 
-              title="Recent Registrations" 
-              avatar={<GroupIcon color="secondary" />}
-              titleTypographyProps={{ variant: isMobile ? 'h6' : 'h5' }}
-            />
-            <Divider />
-            <CardContent sx={{ p: 0, maxHeight: { xs: 300, sm: 400 }, overflow: 'auto' }}>
-              <List>
-                {stats.recentRegistrations.length > 0 ? (
-                  stats.recentRegistrations.map((team) => (
-                    <ListItem key={team._id} divider>
-                      <ListItemAvatar>
-                        <Avatar sx={{ bgcolor: 'secondary.main' }}>
-                          {team.name.charAt(0).toUpperCase()}
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
-                            <Typography variant="body1" fontWeight="medium">
-                              {team.name}
-                            </Typography>
-                            <Chip 
-                              size="small" 
-                              label={team.event && team.event.title ? team.event.title : 'No Event'} 
-                              color="primary" 
-                              variant="outlined"
-                              sx={{ ml: { xs: 0, sm: 1 } }}
-                            />
-                          </Box>
-                        }
-                        secondary={
-                          <>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.5, flexWrap: 'wrap' }}>
-                              <PersonIcon fontSize="small" color="action" />
-                              <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
-                                {team.leader.name}
-                              </Typography>
-                            </Box>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
-                              <EmailIcon fontSize="small" color="action" />
-                              <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
-                                {team.leader.email}
-                              </Typography>
-                            </Box>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
-                              <PhoneIcon fontSize="small" color="action" />
-                              <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
-                                {team.leader.phone}
-                              </Typography>
-                            </Box>
-                            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.5 }}>
-                              Registered: {new Date(team.registrationDate).toLocaleDateString()}
-                            </Typography>
-                          </>
-                        }
-                      />
-                    </ListItem>
-                  ))
-                ) : (
-                  <ListItem>
-                    <ListItemText primary="No recent registrations" />
-                  </ListItem>
-                )}
-              </List>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
+      <Box sx={{ mt: 4 }}>
+        <Typography variant="h5" gutterBottom>
+          Welcome to Trajectory Admin
+        </Typography>
+        <Typography variant="body1">
+          This dashboard provides an overview of your teams and events. Use the sidebar navigation to manage your data.
+        </Typography>
+      </Box>
     </Box>
   );
 } 

@@ -20,8 +20,6 @@ import {
 import { 
   Dashboard as DashboardIcon,
   People as PeopleIcon,
-  Event as EventIcon,
-  Settings as SettingsIcon,
   Menu as MenuIcon
 } from '@mui/icons-material';
 
@@ -40,8 +38,6 @@ const DashboardSidebar: React.FC = () => {
   const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
     { text: 'Teams', icon: <PeopleIcon />, path: '/dashboard/teams' },
-    { text: 'Events', icon: <EventIcon />, path: '/dashboard/events' },
-    { text: 'Settings', icon: <SettingsIcon />, path: '/dashboard/settings' },
   ];
 
   const drawer = (
