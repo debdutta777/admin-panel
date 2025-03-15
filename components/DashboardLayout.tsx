@@ -58,7 +58,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon />, href: '/dashboard' },
-    { text: 'Events', icon: <EventIcon />, href: '/dashboard/events' },
     { text: 'Teams', icon: <GroupIcon />, href: '/dashboard/teams' },
   ];
 
