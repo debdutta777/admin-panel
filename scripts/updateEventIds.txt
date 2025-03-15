@@ -1,0 +1,56 @@
+## Event ID Mapping for Website
+
+Copy this object to your website code where event IDs are defined:
+
+```javascript
+const eventIds = {
+  "Beyond The Frame": "67b7146e9a01ff3f0a3c85e9",
+  "Clash of Cases": "67b714799a01ff3f0a3c85ea",
+  "Data Mine": "67b7148d9a01ff3f0a3c85ec",
+  "Gyan Yudh": "67b714529a01ff3f0a3c85e7",
+  "HydroBlasters": "67b7102b9a01ff3f0a3c85e1",
+  "Mazecraft": "67b710b69a01ff3f0a3c85e3",
+  "Model Matrix": "67b714449a01ff3f0a3c85e6",
+  "Prot-Egg-t": "67b7141b9a01ff3f0a3c85e4",
+  "Robo League": "67b710919a01ff3f0a3c85e2",
+  "Robotrail": "67d556e1bc7f68b37bb2dae4",
+  "Torko Bitorko": "67b7145e9a01ff3f0a3c85e8",
+  "Treasure Hunt": "67d556e1bc7f68b37bb2dae7"
+};
+```
+
+## How to Fix the Issue
+
+1. In your website code, look for where event IDs are defined or hardcoded
+   - This is likely in a file related to the registration form
+   - Search for "Mazecraft" or the ID "67b710b69a01ff3f0a3c85e3"
+
+2. Replace the hardcoded IDs with the mapping above
+   - If you have a different format, make sure to update the "Robotrail" ID to "67d556e1bc7f68b37bb2dae4"
+   - And the "Treasure Hunt" ID to "67d556e1bc7f68b37bb2dae7"
+
+3. If you're using a different approach (like a dropdown that sends the event name instead of ID):
+   - Make sure your backend correctly looks up the event by name before creating the team
+
+## Alternative Solution
+
+If you can't easily update the website code, you can create a mapping in your backend API:
+
+```javascript
+// In your team creation API route
+const eventNameToIdMapping = {
+  "Robotrail": "67d556e1bc7f68b37bb2dae4",
+  "Treasure Hunt": "67d556e1bc7f68b37bb2dae7"
+};
+
+// When processing the form submission
+let eventId = req.body.eventId;
+const eventName = req.body.eventName; // If you're sending the name too
+
+// If the ID matches Mazecraft but the name is Robotrail, use the correct ID
+if (eventId === "67b710b69a01ff3f0a3c85e3" && eventName === "Robotrail") {
+  eventId = eventNameToIdMapping["Robotrail"];
+}
+
+// Then use the corrected eventId
+``` 
