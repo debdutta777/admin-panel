@@ -10,6 +10,7 @@ import {
   ListItem, 
   ListItemIcon, 
   ListItemText,
+  ListItemButton,
   Drawer,
   Divider,
   useMediaQuery,
@@ -63,8 +64,7 @@ const DashboardSidebar: React.FC = () => {
           const isActive = pathname === item.path;
           return (
             <Link href={item.path} key={item.text} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <ListItem 
-                button 
+              <ListItemButton
                 sx={{ 
                   backgroundColor: isActive ? 'rgba(0, 0, 0, 0.04)' : 'transparent',
                   borderLeft: isActive ? `4px solid ${theme.palette.primary.main}` : '4px solid transparent',
@@ -80,7 +80,7 @@ const DashboardSidebar: React.FC = () => {
                     fontWeight: isActive ? 'bold' : 'regular'
                   }} 
                 />
-              </ListItem>
+              </ListItemButton>
             </Link>
           );
         })}
