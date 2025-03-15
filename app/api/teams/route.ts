@@ -7,32 +7,6 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/authOptions';
 import mongoose from 'mongoose';
 
-// Event name to ID mapping for fixing registration issues
-const eventNameToIdMapping = {
-  "Robotrail": "67d556e1bc7f68b37bb2dae4",
-  "Treasure Hunt": "67d556e1bc7f68b37bb2dae7"
-};
-
-// Helper function to correct event IDs
-function correctEventId(eventId: string, eventName?: string): string {
-  // If we have an event name and it's in our mapping, use the correct ID
-  if (eventName && eventNameToIdMapping[eventName]) {
-    return eventNameToIdMapping[eventName];
-  }
-  
-  // If the ID is for Mazecraft but we're trying to register for Robotrail or Treasure Hunt
-  if (eventId === "67b710b69a01ff3f0a3c85e3" && eventName) {
-    if (eventName.includes("Robotrail")) {
-      return eventNameToIdMapping["Robotrail"];
-    }
-    if (eventName.includes("Treasure")) {
-      return eventNameToIdMapping["Treasure Hunt"];
-    }
-  }
-  
-  return eventId;
-}
-
 export async function GET(request: Request) {
   try {
     // Check authentication
@@ -174,11 +148,6 @@ export async function POST(request: Request) {
 
     // Parse request body
     const body = await request.json();
-    
-    // Correct the event ID if needed
-    if (body.event) {
-      body.event = correctEventId(body.event, body.eventName);
-    }
     
     // Connect to the database
     await connectToDatabase();
