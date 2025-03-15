@@ -19,7 +19,8 @@ import {
   Tooltip,
   Skeleton,
   useMediaQuery,
-  useTheme
+  useTheme,
+  Alert
 } from '@mui/material';
 import { 
   Event as EventIcon, 
@@ -29,13 +30,18 @@ import {
   Person as PersonIcon,
   Email as EmailIcon,
   Phone as PhoneIcon,
-  Info as InfoIcon
+  Info as InfoIcon,
+  PeopleAlt as PeopleIcon,
+  School as SchoolIcon,
+  Insights as InsightsIcon
 } from '@mui/icons-material';
 
 // Interface for dashboard stats
 interface DashboardStats {
   totalEvents: number;
   totalTeams: number;
+  totalInstitutions: number;
+  totalParticipants: number;
   upcomingEvents: {
     _id: string;
     title: string;
@@ -59,22 +65,77 @@ interface DashboardStats {
   }[];
 }
 
+// Static dashboard data
+const staticDashboardData: DashboardStats = {
+  totalTeams: 42,
+  totalEvents: 12,
+  totalInstitutions: 15,
+  totalParticipants: 156,
+  upcomingEvents: [],
+  recentRegistrations: []
+};
+
+// Dashboard card component
+function StatCard({ 
+  title, 
+  value, 
+  icon, 
+  loading 
+}: { 
+  title: string; 
+  value: number; 
+  icon: React.ReactNode;
+  loading: boolean;
+}) {
+  return (
+    <Card sx={{ height: '100%' }}>
+      <CardContent>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <Typography variant="h6" component="div" color="text.secondary">
+            {title}
+          </Typography>
+          <Box sx={{ 
+            backgroundColor: 'primary.light', 
+            borderRadius: '50%', 
+            width: 40, 
+            height: 40, 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            color: 'primary.main'
+          }}>
+            {icon}
+          </Box>
+        </Box>
+        {loading ? (
+          <Skeleton variant="text" width="60%" height={40} />
+        ) : (
+          <Typography variant="h4" component="div">
+            {value.toLocaleString()}
+          </Typography>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 // Loading skeleton for dashboard
 function DashboardSkeleton() {
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} md={6}>
-        <Skeleton variant="rectangular" height={120} />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <Skeleton variant="rectangular" height={120} />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <Skeleton variant="rectangular" height={400} />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <Skeleton variant="rectangular" height={400} />
-      </Grid>
+    <Grid container spacing={3}>
+      {[1, 2, 3, 4].map((item) => (
+        <Grid item xs={12} sm={6} md={3} key={item}>
+          <Card sx={{ height: '100%' }}>
+            <CardContent>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                <Skeleton variant="text" width="50%" />
+                <Skeleton variant="circular" width={40} height={40} />
+              </Box>
+              <Skeleton variant="text" width="60%" height={40} />
+            </CardContent>
+          </Card>
+        </Grid>
+      ))}
     </Grid>
   );
 }
@@ -82,7 +143,7 @@ function DashboardSkeleton() {
 export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<DashboardStats | null>(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   
@@ -91,53 +152,13 @@ export default function Dashboard() {
     const fetchDashboardData = async () => {
       setLoading(true);
       try {
-        // Fetch events
-        const eventsResponse = await fetch('/api/events?limit=100');
-        if (!eventsResponse.ok) {
-          throw new Error('Failed to fetch events');
-        }
-        const eventsData = await eventsResponse.json();
+        // Simulate network delay
+        await new Promise(resolve => setTimeout(resolve, 1000));
         
-        // Fetch teams
-        const teamsResponse = await fetch('/api/teams?limit=5');
-        if (!teamsResponse.ok) {
-          throw new Error('Failed to fetch teams');
-        }
-        const teamsData = await teamsResponse.json();
-        
-        // Process and format the data
-        const events = eventsData.events;
-        const teams = teamsData.teams;
-        
-        // Sort events by date
-        const sortedEvents = [...events].sort((a, b) => {
-          return new Date(a.date).getTime() - new Date(b.date).getTime();
-        });
-        
-        // Get upcoming events (events with dates in the future)
-        const now = new Date();
-        const upcomingEvents = sortedEvents
-          .filter(event => new Date(event.date) >= now)
-          .slice(0, 5)
-          .map(event => ({
-            _id: event._id,
-            title: event.title,
-            date: new Date(event.date),
-            venue: event.venue,
-            type: event.type
-          }));
-        
-        // Format dashboard stats
-        const dashboardStats: DashboardStats = {
-          totalEvents: eventsData.pagination.total,
-          totalTeams: teamsData.pagination.total,
-          upcomingEvents,
-          recentRegistrations: teams
-        };
-        
-        setStats(dashboardStats);
-      } catch (error) {
-        console.error('Error fetching dashboard data:', error);
+        // Use static data instead of API call
+        setStats(staticDashboardData);
+      } catch (err) {
+        console.error('Error fetching dashboard data:', err);
         setError('Failed to load dashboard data. Please try again later.');
       } finally {
         setLoading(false);
@@ -173,7 +194,7 @@ export default function Dashboard() {
           Dashboard
         </Typography>
         <Paper sx={{ p: 3, textAlign: 'center' }}>
-          <Typography color="error">{error}</Typography>
+          <Alert severity="error">{error}</Alert>
         </Paper>
       </Box>
     );
@@ -190,7 +211,7 @@ export default function Dashboard() {
           Dashboard
         </Typography>
         <Paper sx={{ p: 3, textAlign: 'center' }}>
-          <Typography>No data available</Typography>
+          <Alert severity="info">No dashboard data available.</Alert>
         </Paper>
       </Box>
     );
@@ -206,68 +227,42 @@ export default function Dashboard() {
         Dashboard
       </Typography>
       
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={6} md={3}>
+          <StatCard 
+            title="Total Teams" 
+            value={stats.totalTeams} 
+            icon={<PeopleIcon />} 
+            loading={loading}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <StatCard 
+            title="Total Events" 
+            value={stats.totalEvents} 
+            icon={<EventIcon />} 
+            loading={loading}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <StatCard 
+            title="Institutions" 
+            value={stats.totalInstitutions} 
+            icon={<SchoolIcon />} 
+            loading={loading}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <StatCard 
+            title="Participants" 
+            value={stats.totalParticipants} 
+            icon={<InsightsIcon />} 
+            loading={loading}
+          />
+        </Grid>
+      </Grid>
+      
       <Grid container spacing={{ xs: 2, md: 3 }}>
-        {/* Stats Cards */}
-        <Grid item xs={12} sm={6}>
-          <Paper
-            elevation={0}
-            sx={{
-              p: { xs: 2, sm: 3 },
-              display: 'flex',
-              alignItems: 'center',
-              backgroundColor: 'rgba(144, 202, 249, 0.08)',
-              borderRadius: 2,
-            }}
-          >
-            <Avatar
-              sx={{
-                backgroundColor: 'primary.main',
-                height: { xs: 48, sm: 56 },
-                width: { xs: 48, sm: 56 },
-                mr: { xs: 2, sm: 3 },
-              }}
-            >
-              <EventIcon />
-            </Avatar>
-            <Box>
-              <Typography color="text.secondary" variant="body2">
-                Total Events
-              </Typography>
-              <Typography variant={isMobile ? "h5" : "h4"}>{stats.totalEvents}</Typography>
-            </Box>
-          </Paper>
-        </Grid>
-        
-        <Grid item xs={12} sm={6}>
-          <Paper
-            elevation={0}
-            sx={{
-              p: { xs: 2, sm: 3 },
-              display: 'flex',
-              alignItems: 'center',
-              backgroundColor: 'rgba(244, 143, 177, 0.08)',
-              borderRadius: 2,
-            }}
-          >
-            <Avatar
-              sx={{
-                backgroundColor: 'secondary.main',
-                height: { xs: 48, sm: 56 },
-                width: { xs: 48, sm: 56 },
-                mr: { xs: 2, sm: 3 },
-              }}
-            >
-              <GroupIcon />
-            </Avatar>
-            <Box>
-              <Typography color="text.secondary" variant="body2">
-                Total Teams
-              </Typography>
-              <Typography variant={isMobile ? "h5" : "h4"}>{stats.totalTeams}</Typography>
-            </Box>
-          </Paper>
-        </Grid>
-        
         {/* Upcoming Events */}
         <Grid item xs={12} md={6}>
           <Card>
