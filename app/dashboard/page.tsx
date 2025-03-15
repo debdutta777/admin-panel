@@ -24,12 +24,6 @@ interface DashboardStats {
   totalEvents: number;
 }
 
-// Static dashboard data with real counts
-const staticDashboardData: DashboardStats = {
-  totalTeams: 0,
-  totalEvents: 0
-};
-
 // Dashboard card component
 function StatCard({ 
   title, 
@@ -102,16 +96,19 @@ export default function Dashboard() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   
-  // Fetch dashboard data
+  // Fetch dashboard data from API
   useEffect(() => {
     const fetchDashboardData = async () => {
       setLoading(true);
       try {
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        const response = await fetch('/api/dashboard');
         
-        // Use static data instead of API call
-        setStats(staticDashboardData);
+        if (!response.ok) {
+          throw new Error('Failed to fetch dashboard data');
+        }
+        
+        const data = await response.json();
+        setStats(data);
       } catch (err) {
         console.error('Error fetching dashboard data:', err);
         setError('Failed to load dashboard data. Please try again later.');
