@@ -41,11 +41,11 @@ function DashboardLayoutWrapper({ children }: { children: ReactNode }) {
       <Box sx={{ display: 'flex', minHeight: '100vh' }}>
         <CssBaseline />
         <DashboardSidebar />
-        <Box 
-          component="main" 
-          sx={{ 
-            flexGrow: 1, 
-            p: 3, 
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            p: { xs: 1, sm: 2 },
             width: { md: `calc(100% - 240px)` },
             ml: { md: '240px' },
             mt: { xs: 7, md: 0 }

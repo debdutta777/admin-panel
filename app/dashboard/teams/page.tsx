@@ -523,8 +523,8 @@ export default function TeamsPage() {
   };
   
   return (
-    <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: { xs: 2, sm: 3 }, flexWrap: 'wrap', gap: 1 }}>
+    <Box sx={{ px: 0 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: { xs: 1, sm: 2 }, flexWrap: 'wrap', gap: 1 }}>
         <Typography variant={isSmall ? "h5" : "h4"} gutterBottom sx={{ mb: 0 }}>
           Teams
         </Typography>
@@ -541,13 +541,13 @@ export default function TeamsPage() {
       </Box>
       
       {error && (
-        <Alert severity="error" sx={{ mb: 3 }}>
+        <Alert severity="error" sx={{ mb: 2 }}>
           {error}
         </Alert>
       )}
       
-      <Card sx={{ mb: { xs: 2, sm: 3 } }}>
-        <CardContent>
+      <Card sx={{ mb: { xs: 1, sm: 2 } }}>
+        <CardContent sx={{ p: { xs: 1, sm: 2 } }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
