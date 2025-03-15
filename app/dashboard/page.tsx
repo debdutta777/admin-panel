@@ -65,14 +65,85 @@ interface DashboardStats {
   }[];
 }
 
-// Static dashboard data
+// Sample upcoming events
+const sampleUpcomingEvents = [
+  {
+    _id: "evt1",
+    title: "Annual Tech Conference",
+    date: new Date("2025-04-15"),
+    venue: "Convention Center",
+    type: "Conference"
+  },
+  {
+    _id: "evt2",
+    title: "Hackathon 2025",
+    date: new Date("2025-05-10"),
+    venue: "University Campus",
+    type: "Competition"
+  },
+  {
+    _id: "evt3",
+    title: "AI Workshop",
+    date: new Date("2025-04-25"),
+    venue: "Innovation Hub",
+    type: "Workshop"
+  }
+];
+
+// Sample recent registrations
+const sampleRecentRegistrations = [
+  {
+    _id: "team1",
+    name: "Code Wizards",
+    event: {
+      _id: "evt1",
+      title: "Annual Tech Conference"
+    },
+    leader: {
+      name: "John Smith",
+      email: "john.smith@example.com",
+      phone: "+1 (555) 123-4567"
+    },
+    registrationDate: "2025-03-10"
+  },
+  {
+    _id: "team2",
+    name: "Data Miners",
+    event: {
+      _id: "evt2",
+      title: "Hackathon 2025"
+    },
+    leader: {
+      name: "Emily Johnson",
+      email: "emily.j@example.com",
+      phone: "+1 (555) 987-6543"
+    },
+    registrationDate: "2025-03-12"
+  },
+  {
+    _id: "team3",
+    name: "AI Innovators",
+    event: {
+      _id: "evt3",
+      title: "AI Workshop"
+    },
+    leader: {
+      name: "Michael Chen",
+      email: "michael.c@example.com",
+      phone: "+1 (555) 456-7890"
+    },
+    registrationDate: "2025-03-14"
+  }
+];
+
+// Static dashboard data with sample events and registrations
 const staticDashboardData: DashboardStats = {
   totalTeams: 42,
   totalEvents: 12,
   totalInstitutions: 15,
   totalParticipants: 156,
-  upcomingEvents: [],
-  recentRegistrations: []
+  upcomingEvents: sampleUpcomingEvents,
+  recentRegistrations: sampleRecentRegistrations
 };
 
 // Dashboard card component
@@ -262,7 +333,7 @@ export default function Dashboard() {
         </Grid>
       </Grid>
       
-      <Grid container spacing={{ xs: 2, md: 3 }}>
+      <Grid container spacing={3} sx={{ mt: 1 }}>
         {/* Upcoming Events */}
         <Grid item xs={12} md={6}>
           <Card>
