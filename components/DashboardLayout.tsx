@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useSession, signOut } from 'next-auth/react';
 import { 
   AppBar, 
   Box, 
@@ -24,9 +23,7 @@ import {
 import {
   Menu as MenuIcon,
   Dashboard as DashboardIcon,
-  Event as EventIcon,
   Group as GroupIcon,
-  Logout as LogoutIcon,
   AccountCircle
 } from '@mui/icons-material';
 import Link from 'next/link';
@@ -39,7 +36,6 @@ interface DashboardLayoutProps {
 }
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
-  const { data: session } = useSession();
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -105,11 +101,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       <Divider />
       <List>
         <ListItem disablePadding>
-          <ListItemButton onClick={() => signOut({ callbackUrl: '/auth/signin' })}>
+          <ListItemButton onClick={handleClose}>
             <ListItemIcon>
-              <LogoutIcon />
+              <AccountCircle />
             </ListItemIcon>
-            <ListItemText primary="Logout" />
+            <ListItemText primary="User Profile" />
           </ListItemButton>
         </ListItem>
       </List>
@@ -152,15 +148,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   onClick={handleMenu}
                   color="inherit"
                 >
-                  {session.user?.image ? (
-                    <Avatar 
-                      src={session.user.image} 
-                      alt={session.user.name || 'User'} 
-                      sx={{ width: 32, height: 32 }}
-                    />
-                  ) : (
-                    <AccountCircle />
-                  )}
+                  <Avatar
+                    sx={{ width: 32, height: 32 }}
+                    alt="Admin User"
+                  >
+                    A
+                  </Avatar>
                 </IconButton>
               </Tooltip>
               <Menu
@@ -179,16 +172,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 onClose={handleClose}
               >
                 <MenuItem disabled>
-                  <Typography variant="body2">
-                    {session.user?.email}
+                  <Typography sx={{ p: 1 }}>
+                    admin@example.com
                   </Typography>
                 </MenuItem>
                 <Divider />
-                <MenuItem onClick={() => signOut({ callbackUrl: '/auth/signin' })}>
-                  <ListItemIcon>
-                    <LogoutIcon fontSize="small" />
-                  </ListItemIcon>
-                  Logout
+                <MenuItem onClick={handleClose}>
+                  <Typography textAlign="center">Profile</Typography>
                 </MenuItem>
               </Menu>
             </div>

@@ -3,17 +3,11 @@ import connectToDatabase from '../../../lib/mongodb';
 import Team from '../../../models/Team';
 import Event from '../../../models/Event';
 import User from '../../../models/User';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../auth/authOptions';
 import mongoose from 'mongoose';
 
 export async function GET(request: Request) {
   try {
-    // Check authentication
-    const session = await getServerSession(authOptions);
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    // No authentication check
 
     // Parse query parameters
     const { searchParams } = new URL(request.url);
@@ -140,12 +134,8 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    // Check authentication
-    const session = await getServerSession(authOptions);
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
+    // No authentication check
+    
     // Parse request body
     const body = await request.json();
     
