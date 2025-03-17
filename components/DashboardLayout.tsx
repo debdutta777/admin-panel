@@ -217,7 +217,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         component="main"
         sx={{ 
           flexGrow: 1, 
-          p: { xs: 2, sm: 3 },
+          px: 0,
+          py: { xs: 2, sm: 3 },
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           minHeight: '100vh',
           backgroundColor: 'background.default',

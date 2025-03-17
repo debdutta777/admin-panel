@@ -525,7 +525,7 @@ export default function TeamsPage() {
   
   return (
     <Box sx={{ px: 0 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: { xs: 1, sm: 2 }, flexWrap: 'wrap', gap: 1, px: 1 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: { xs: 1, sm: 2 }, flexWrap: 'wrap', gap: 1, px: 0 }}>
         <Typography variant={isSmall ? "h5" : "h4"} gutterBottom sx={{ mb: 0 }}>
           Teams
         </Typography>
@@ -587,7 +587,7 @@ export default function TeamsPage() {
       ) : teams.length > 0 ? (
         <>
           {isMobile ? (
-            <Box sx={{ px: 1 }}>
+            <Box sx={{ px: 0 }}>
               {renderMobileTeamList()}
             </Box>
           ) : (
@@ -776,7 +776,7 @@ export default function TeamsPage() {
             </TableContainer>
           )}
           
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3, px: 1, mb: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3, px: 0, mb: 2 }}>
             <Pagination 
               count={pagination.pages} 
               page={page} 
