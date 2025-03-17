@@ -4,6 +4,19 @@ import Team from '../../../models/Team';
 import Event from '../../../models/Event';
 import mongoose from 'mongoose';
 
+// Define interfaces for our expected document structures
+interface EventData {
+  _id: mongoose.Types.ObjectId | string;
+  title: string;
+}
+
+interface TeamData {
+  _id: mongoose.Types.ObjectId | string;
+  name: string;
+  event?: mongoose.Types.ObjectId | string;
+  createdAt: Date;
+}
+
 export async function GET() {
   try {
     // Connect to the database
@@ -16,7 +29,7 @@ export async function GET() {
     const totalEvents = await Event.countDocuments();
 
     // Get events with team counts
-    const events = await Event.find().sort({ title: 1 }).lean();
+    const eventsData = await Event.find().sort({ title: 1 }).lean();
     
     // Get team counts for each event
     const teamCounts = await Team.aggregate([
@@ -24,46 +37,47 @@ export async function GET() {
     ]);
     
     // Create a map of event IDs to team counts
-    const eventCountMap = new Map();
+    const eventCountMap = new Map<string, number>();
     teamCounts.forEach(item => {
       if (item._id) {
-        eventCountMap.set(item._id.toString(), item.count);
+        eventCountMap.set(String(item._id), item.count);
       }
     });
     
     // Format events with counts
-    const eventsWithCounts = events.map(event => ({
-      _id: event._id.toString(),
-      title: event.title,
-      teamCount: eventCountMap.get(event._id.toString()) || 0
+    const eventsWithCounts = eventsData.map(event => ({
+      _id: String(event._id),
+      title: String(event.title),
+      teamCount: eventCountMap.get(String(event._id)) || 0
     }));
     
     // Get recent team registrations (limit to 5)
-    const recentRegistrations = await Team.find()
+    const teamsData = await Team.find()
       .sort({ createdAt: -1 })
       .limit(5)
       .lean();
       
     // Format recent registrations
-    const formattedRecentRegistrations = recentRegistrations.map(team => ({
-      _id: team._id.toString(),
-      name: team.name,
+    const formattedRecentRegistrations = teamsData.map(team => ({
+      _id: String(team._id),
+      name: String(team.name),
       createdAt: team.createdAt,
-      eventId: team.event ? team.event.toString() : null
+      eventId: team.event ? String(team.event) : null
     }));
     
     // Get event data for recent registrations
-    const eventIds = [...new Set(formattedRecentRegistrations
+    const eventIds = formattedRecentRegistrations
       .map(reg => reg.eventId)
-      .filter(Boolean))];
+      .filter((id): id is string => id !== null);
       
-    const recentEvents = await Event.find({ 
+    const eventsForRegistrations = await Event.find({ 
       _id: { $in: eventIds.map(id => new mongoose.Types.ObjectId(id)) } 
     }).lean();
     
-    const eventMap = new Map();
-    recentEvents.forEach(event => {
-      eventMap.set(event._id.toString(), event.title);
+    // Build event map
+    const eventMap = new Map<string, string>();
+    eventsForRegistrations.forEach(event => {
+      eventMap.set(String(event._id), String(event.title));
     });
     
     // Add event names to recent registrations
