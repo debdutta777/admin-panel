@@ -92,6 +92,7 @@ interface Team {
   member2?: string;
   member3?: string;
   registrationDate: string;
+  createdAt?: string;
 }
 
 // Additional type for detailed event info

@@ -43,7 +43,7 @@ export async function GET(request: Request) {
 
     // Fetch teams with pagination
     const teams = await Team.find(query)
-      .sort({ registrationDate: -1 })
+      .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
 
@@ -110,7 +110,9 @@ export async function GET(request: Request) {
           role: leaderInfo.role
         } : null,
         members: team.members,
-        registrationDate: team.registrationDate.toISOString()
+        registrationDate: team.createdAt ? team.createdAt.toISOString() : 
+                          team.registrationDate ? team.registrationDate.toISOString() : 
+                          new Date().toISOString()
       };
     });
 
