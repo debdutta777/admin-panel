@@ -542,12 +542,12 @@ export default function TeamsPage() {
       </Box>
       
       {error && (
-        <Alert severity="error" sx={{ mb: 2, mx: 1 }}>
+        <Alert severity="error" sx={{ mb: 2, mx: 0 }}>
           {error}
         </Alert>
       )}
       
-      <Card sx={{ mb: { xs: 1, sm: 2 }, mx: 1, borderRadius: 1 }}>
+      <Card sx={{ mb: { xs: 1, sm: 2 }, mx: 0, borderRadius: 1 }}>
         <CardContent sx={{ p: { xs: 1, sm: 2 } }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
@@ -788,7 +788,7 @@ export default function TeamsPage() {
           </Box>
         </>
       ) : (
-        <Paper sx={{ p: 3, textAlign: 'center', mx: 1, mb: 2 }}>
+        <Paper sx={{ p: 3, textAlign: 'center', mx: 0, mb: 2 }}>
           <Typography variant="body1">
             No teams found matching your criteria.
           </Typography>
