@@ -45,7 +45,8 @@ function DashboardLayoutWrapper({ children }: { children: ReactNode }) {
           component="main"
           sx={{
             flexGrow: 1,
-            p: { xs: 1, sm: 2 },
+            px: 0,
+            py: { xs: 1, sm: 2 },
             width: { md: `calc(100% - 240px)` },
             ml: { md: '240px' },
             mt: { xs: 7, md: 0 }

@@ -119,7 +119,7 @@ interface PaginationInfo {
 // Loading skeleton
 function TeamsTableSkeleton() {
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} sx={{ mx: 0, borderRadius: 0 }}>
       <Table>
         <TableHead>
           <TableRow>
@@ -525,7 +525,7 @@ export default function TeamsPage() {
   
   return (
     <Box sx={{ px: 0 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: { xs: 1, sm: 2 }, flexWrap: 'wrap', gap: 1 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: { xs: 1, sm: 2 }, flexWrap: 'wrap', gap: 1, px: 1 }}>
         <Typography variant={isSmall ? "h5" : "h4"} gutterBottom sx={{ mb: 0 }}>
           Teams
         </Typography>
@@ -542,12 +542,12 @@ export default function TeamsPage() {
       </Box>
       
       {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
+        <Alert severity="error" sx={{ mb: 2, mx: 1 }}>
           {error}
         </Alert>
       )}
       
-      <Card sx={{ mb: { xs: 1, sm: 2 } }}>
+      <Card sx={{ mb: { xs: 1, sm: 2 }, mx: 1, borderRadius: 1 }}>
         <CardContent sx={{ p: { xs: 1, sm: 2 } }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
@@ -587,9 +587,11 @@ export default function TeamsPage() {
       ) : teams.length > 0 ? (
         <>
           {isMobile ? (
-            renderMobileTeamList()
+            <Box sx={{ px: 1 }}>
+              {renderMobileTeamList()}
+            </Box>
           ) : (
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} sx={{ mx: 0, borderRadius: 0 }}>
               <Table sx={{ minWidth: 650 }}>
                 <TableHead>
                   <TableRow>
@@ -774,7 +776,7 @@ export default function TeamsPage() {
             </TableContainer>
           )}
           
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3, px: 1, mb: 2 }}>
             <Pagination 
               count={pagination.pages} 
               page={page} 
@@ -786,7 +788,7 @@ export default function TeamsPage() {
           </Box>
         </>
       ) : (
-        <Paper sx={{ p: 3, textAlign: 'center' }}>
+        <Paper sx={{ p: 3, textAlign: 'center', mx: 1, mb: 2 }}>
           <Typography variant="body1">
             No teams found matching your criteria.
           </Typography>
